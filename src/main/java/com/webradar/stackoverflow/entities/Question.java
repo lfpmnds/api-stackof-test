@@ -11,27 +11,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_post")
-public class Post {
+@Table(name = "tb_question")
+public class Question {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private String title;
+		
 	private String body;
 	
 	@ManyToOne
 	@JoinColumn(name = "author_id")
 	private User author;
 	
-	public Post() {
+	public Question() {
 	}
 
-	public Post(Long id, String title, String body, User userAuthor) {
+	public Question(Long id, String title, String body, User userAuthor) {
 		super();
-		this.id = id;
-		this.title = title;
+		this.id = id;		
 		this.body = body;
 		this.author = userAuthor;
 	}
@@ -40,21 +38,29 @@ public class Post {
 		return id;
 	}
 
-	public String getTitle() {
-		return title;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getBody() {
 		return body;
 	}
 
-	public User getUserAuthor() {
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public User getAuthor() {
 		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, author);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -65,7 +71,7 @@ public class Post {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Post other = (Post) obj;
-		return Objects.equals(id, other.id) && Objects.equals(author, other.author);
-	}	
+		Question other = (Question) obj;
+		return Objects.equals(id, other.id);
+	}
 }

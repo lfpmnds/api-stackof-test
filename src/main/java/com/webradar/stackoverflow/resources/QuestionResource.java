@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.webradar.stackoverflow.entities.Post;
-import com.webradar.stackoverflow.services.PostService;
+import com.webradar.stackoverflow.entities.Question;
+import com.webradar.stackoverflow.services.QuestionService;
 
 @RestController
-@RequestMapping(value = "/posts")
-public class PostResource {
+@RequestMapping(value = "/questions")
+public class QuestionResource {
 	
 	@Autowired
-	private PostService service;
+	private QuestionService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Post>> findAll() {
-		List<Post> list = service.findAll();
+	public ResponseEntity<List<Question>> findAll() {
+		List<Question> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 }

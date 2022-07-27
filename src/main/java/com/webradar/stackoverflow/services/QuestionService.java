@@ -5,16 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.webradar.stackoverflow.entities.Post;
-import com.webradar.stackoverflow.repositories.PostRepository;
+import com.webradar.stackoverflow.entities.Question;
+import com.webradar.stackoverflow.repositories.QuestionRepository;
 
 @Service
-public class PostService {
+public class QuestionService {
 
 	@Autowired
-	private PostRepository repository;
+	private QuestionRepository repository;
 	
-	public List<Post> findAll() {
+	public List<Question> findAll() {
 		return repository.findAll();
 	}
 }
