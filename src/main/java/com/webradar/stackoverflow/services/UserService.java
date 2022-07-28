@@ -19,6 +19,7 @@ public class UserService {
 	}
 
 	public User save(User user) {
+		//criar regra pra verificar se usuário já existe
 		repository.save(user);
 		return user;
 	}

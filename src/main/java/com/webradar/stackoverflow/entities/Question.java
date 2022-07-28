@@ -23,7 +23,7 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(name = "author_id")
 	private User author;
-	
+		
 	public Question() {
 	}
 

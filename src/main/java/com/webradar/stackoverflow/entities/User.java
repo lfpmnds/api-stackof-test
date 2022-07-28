@@ -23,6 +23,11 @@ public class User implements Serializable {
 		
 	public User() {
 	}
+	
+	public User(Long id) {
+		super();
+		this.id = id;
+	}
 
 	public User(Long id, String username, String password) {
 		super();
