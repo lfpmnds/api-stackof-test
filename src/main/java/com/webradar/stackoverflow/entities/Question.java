@@ -26,13 +26,18 @@ public class Question {
 		
 	public Question() {
 	}
+	
+	public Question(Long id) {
+		super();
+		this.id = id;
+	}
 
 	public Question(Long id, String title, String body, User userAuthor) {
 		super();
 		this.id = id;		
 		this.body = body;
 		this.author = userAuthor;
-	}
+	}	
 
 	public Long getId() {
 		return id;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webradar.stackoverflow.entities.Answer;
+import com.webradar.stackoverflow.entities.Question;
 import com.webradar.stackoverflow.entities.User;
 import com.webradar.stackoverflow.repositories.AnswerRepository;
 
@@ -21,5 +22,9 @@ public class AnswerService {
 	
 	public List<Answer> findByUser(User user) {
 		return repository.findByUserId(user);
+	}
+	
+	public List<Answer> findByQuestion(Question question) {
+		return repository.findByQuestionId(question);
 	}
 }
