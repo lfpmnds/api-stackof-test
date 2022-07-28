@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webradar.stackoverflow.entities.Answer;
 import com.webradar.stackoverflow.entities.Question;
 import com.webradar.stackoverflow.entities.User;
+import com.webradar.stackoverflow.services.AnswerService;
 import com.webradar.stackoverflow.services.QuestionService;
 import com.webradar.stackoverflow.services.UserService;
 
@@ -20,11 +22,15 @@ import com.webradar.stackoverflow.services.UserService;
 @RequestMapping(value = "/users")
 public class UserResource {
 
+	
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private QuestionService questionService;
 	
 	@Autowired
-	private UserService userService;
+	private AnswerService answerService;	
 
 	@GetMapping
 	public ResponseEntity<List<User>> findAll() {
@@ -37,7 +43,14 @@ public class UserResource {
 		User user = new User(Long.parseLong(id));
 		List<Question> list = questionService.findByUser(user);		
 		return ResponseEntity.ok().body(list);
-	}	
+	}
+	
+	@GetMapping(value = "/{id}/answers")
+	public ResponseEntity<List<Answer>> findAnswersByUserId(@PathVariable String id) {
+		User user = new User(Long.parseLong(id));
+		List<Answer> list = answerService.findByUser(user);
+		return ResponseEntity.ok().body(list);
+	}
 	
 	@PostMapping
 	public User insert(@RequestBody User user) {
