@@ -1,12 +1,15 @@
 package com.webradar.stackoverflow.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +23,12 @@ public class User implements Serializable {
 	
 	private String username;	
 	private String password;
+	
+	@OneToMany(mappedBy = "author")
+	private Set<Question> questions = new HashSet<>();
+	
+	@OneToMany(mappedBy = "author")
+	private Set<Answer> answers = new HashSet<>();
 		
 	public User() {
 	}
