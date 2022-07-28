@@ -8,4 +8,5 @@ import com.webradar.stackoverflow.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+	boolean existsByUsername(String name);
 }

@@ -18,9 +18,11 @@ public class UserService {
 		return repository.findAll();
 	}
 
+	// necessário tratar se usuário já existir
 	public User save(User user) {
-		//criar regra pra verificar se usuário já existe
-		repository.save(user);
+		if (!repository.existsByUsername(user.getUsername())) {
+			repository.save(user);
+		}
 		return user;
 	}
 }
