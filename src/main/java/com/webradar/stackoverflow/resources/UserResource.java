@@ -39,14 +39,14 @@ public class UserResource {
 	}
 	
 	@GetMapping(value = "/{id}/questions")
-	public ResponseEntity<List<Question>> findQuestionsByUserId(@PathVariable String id) {
+	public ResponseEntity<List<Question>> findAllQuestionsByUserId(@PathVariable String id) {
 		User user = new User(Long.parseLong(id));
 		List<Question> list = questionService.findByUser(user);		
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}/answers")
-	public ResponseEntity<List<Answer>> findAnswersByUserId(@PathVariable String id) {
+	public ResponseEntity<List<Answer>> findAllAnswersByUserId(@PathVariable String id) {
 		User user = new User(Long.parseLong(id));
 		List<Answer> list = answerService.findByUser(user);
 		return ResponseEntity.ok().body(list);
