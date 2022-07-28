@@ -37,8 +37,7 @@ public class UserResource {
 		User user = new User(Long.parseLong(id));
 		List<Question> list = questionService.findByUser(user);		
 		return ResponseEntity.ok().body(list);
-	}
-	
+	}	
 	
 	@PostMapping
 	public User insert(@RequestBody User user) {
