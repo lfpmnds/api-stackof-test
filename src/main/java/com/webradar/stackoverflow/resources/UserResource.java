@@ -2,6 +2,8 @@ package com.webradar.stackoverflow.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +55,7 @@ public class UserResource {
 	}
 	
 	@PostMapping
-	public User insert(@RequestBody User user) {
+	public User insert(@RequestBody @Valid User user) {
 		return userService.save(user);
 	}
 }

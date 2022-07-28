@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tb_user")
@@ -21,7 +22,10 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String username;	
+	@NotBlank(message = "O nome de usuário não pode estar em branco")
+	private String username;
+	
+	@NotBlank(message = "Uma senha deve ser inserida")
 	private String password;
 	
 	@OneToMany(mappedBy = "author")
