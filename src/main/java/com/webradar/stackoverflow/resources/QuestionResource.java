@@ -1,5 +1,6 @@
 package com.webradar.stackoverflow.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.webradar.stackoverflow.entities.Answer;
 import com.webradar.stackoverflow.entities.Question;
@@ -42,7 +44,10 @@ public class QuestionResource {
 	}
 	
 	@PostMapping
-	public Question insert(@RequestBody @Valid Question question) {
-		return questionService.save(question);
+	public ResponseEntity<Question> insert(@RequestBody @Valid Question question) {
+		question = questionService.save(question);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(question.getId()).toUri();
+		return ResponseEntity.created(uri).body(question);
 	}	
 }
