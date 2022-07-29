@@ -31,4 +31,14 @@ public class AnswerService {
 	public Answer save(Answer answer) {
 		return repository.save(answer);
 	}
+
+	public Answer update(Long id, Answer answer) {
+		Answer entity = repository.getReferenceById(id);
+		if (entity.getAuthor().getId() == answer.getAuthor().getId() 
+				&& entity.getQuestion().getId() == answer.getQuestion().getId()) {
+			entity.setBody(answer.getBody());
+			entity = repository.save(entity);
+		}
+		return entity;
+	}
 }
