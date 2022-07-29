@@ -22,4 +22,8 @@ public class QuestionService {
 	public List<Question> findByUser(User user) {
 		return repository.findByUserId(user);
 	}
+	
+	public Question save(Question question) {
+		return repository.save(question);
+	}
 }

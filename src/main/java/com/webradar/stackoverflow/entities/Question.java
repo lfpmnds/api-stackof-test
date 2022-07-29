@@ -24,7 +24,7 @@ public class Question {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 		
-	@NotBlank(message = "Insira caracteres válidos")
+	@NotBlank(message = "A pergunta não pode estar vazia")
 	private String body;
 	
 	@ManyToOne
