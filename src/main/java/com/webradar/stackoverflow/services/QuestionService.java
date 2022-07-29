@@ -2,12 +2,15 @@ package com.webradar.stackoverflow.services;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webradar.stackoverflow.entities.Question;
 import com.webradar.stackoverflow.entities.User;
 import com.webradar.stackoverflow.repositories.QuestionRepository;
+import com.webradar.stackoverflow.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class QuestionService {
@@ -21,19 +24,24 @@ public class QuestionService {
 	
 	public List<Question> findByUser(User user) {
 		return repository.findByUserId(user);
+				
 	}
 	
 	public Question save(Question question) {
 		return repository.save(question);
 	}
 
-	//pensar em como lançar exceção
 	public Question update(Long id, Question question) {
-		Question entity = repository.getReferenceById(id);
-		if (entity.getAuthor().getId() == question.getAuthor().getId()) {
-			entity.setBody(question.getBody());
-			entity = repository.save(entity);
+		try {
+			Question entity = repository.getReferenceById(id);
+			if (entity.getAuthor().getId() == question.getAuthor().getId()) {
+				entity.setBody(question.getBody());
+				entity = repository.save(entity);
+			}
+			return entity;
 		}
-		return entity;
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Questão não encontrada");
+		}		
 	}
 }
