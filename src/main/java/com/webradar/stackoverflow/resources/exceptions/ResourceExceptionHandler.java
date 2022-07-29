@@ -47,7 +47,7 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(UserInsertException.class)
 	public ResponseEntity<StandardError> userExist(UserInsertException e, HttpServletRequest request) {
-		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
