@@ -3,10 +3,12 @@ package com.webradar.stackoverflow.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.webradar.stackoverflow.entities.User;
 import com.webradar.stackoverflow.repositories.UserRepository;
+import com.webradar.stackoverflow.services.exceptions.UserInsertException;
 
 @Service
 public class UserService {
@@ -18,11 +20,13 @@ public class UserService {
 		return repository.findAll();
 	}
 
-	// necessário tratar se usuário já existir
 	public User save(User user) {
-		if (!repository.existsByUsername(user.getUsername())) {
+		try {
 			repository.save(user);
+			return user;
 		}
-		return user;
+		catch (DataIntegrityViolationException e) {
+			throw new UserInsertException("Usuário já cadastrado");
+		}
 	}
 }

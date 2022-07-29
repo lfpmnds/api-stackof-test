@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.webradar.stackoverflow.services.exceptions.ResourceNotFoundException;
+import com.webradar.stackoverflow.services.exceptions.UserInsertException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -34,7 +35,7 @@ public class ResourceExceptionHandler {
 		ValidationError err = new ValidationError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
-		err.setError("Validation exception");
+		err.setError("Exceção de validação");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		
@@ -43,4 +44,16 @@ public class ResourceExceptionHandler {
 		}		
 		return ResponseEntity.status(status).body(err);
 	}	
+	
+	@ExceptionHandler(UserInsertException.class)
+	public ResponseEntity<StandardError> userExist(UserInsertException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		StandardError err = new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Usuário já cadastrado");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
 }

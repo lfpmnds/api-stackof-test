@@ -1,10 +1,11 @@
 package com.webradar.stackoverflow.services.exceptions;
 
-public class ResourceNotFoundException extends RuntimeException {
+public class UserInsertException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public ResourceNotFoundException(String msg) {
+	public UserInsertException(String msg) {
 		super(msg);
 	}
+
 }
