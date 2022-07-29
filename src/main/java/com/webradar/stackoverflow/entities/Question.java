@@ -1,5 +1,7 @@
 package com.webradar.stackoverflow.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -8,8 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_question")
@@ -25,6 +30,10 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(name = "author_id")
 	private User author;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "question")
+	List<Answer> answers = new ArrayList<>();
 		
 	public Question() {
 	}
