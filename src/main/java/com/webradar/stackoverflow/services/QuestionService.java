@@ -26,4 +26,14 @@ public class QuestionService {
 	public Question save(Question question) {
 		return repository.save(question);
 	}
+
+	//pensar em como lançar exceção
+	public Question update(Long id, Question question) {
+		Question entity = repository.getReferenceById(id);
+		if (entity.getAuthor().getId() == question.getAuthor().getId()) {
+			entity.setBody(question.getBody());
+			entity = repository.save(entity);
+		}
+		return entity;
+	}
 }
