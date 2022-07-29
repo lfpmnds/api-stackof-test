@@ -27,4 +27,8 @@ public class AnswerService {
 	public List<Answer> findByQuestion(Question question) {
 		return repository.findByQuestionId(question);
 	}
+	
+	public Answer save(Answer answer) {
+		return repository.save(answer);
+	}
 }
