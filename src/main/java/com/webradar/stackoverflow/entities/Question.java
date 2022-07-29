@@ -73,6 +73,10 @@ public class Question {
 	public void setAuthor(User author) {
 		this.author = author;
 	}	
+	
+	public List<Answer> getAnswers() {
+		return answers;
+	}
 
 	@Override
 	public int hashCode() {
