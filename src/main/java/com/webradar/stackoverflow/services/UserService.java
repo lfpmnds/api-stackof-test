@@ -21,9 +21,8 @@ public class UserService {
 	}
 
 	public User save(User user) {
-		try {
-			repository.save(user);
-			return user;
+		try {			
+			return repository.save(user);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new UserInsertException("Usuário já cadastrado");
