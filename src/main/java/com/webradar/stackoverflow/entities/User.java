@@ -2,6 +2,7 @@ package com.webradar.stackoverflow.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,11 +15,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {		
+public class User implements UserDetails, Serializable {		
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -63,6 +68,7 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	@Override
 	public String getUsername() {
 		return username;
 	}
@@ -102,5 +108,32 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
-	}	
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> list = new ArrayList<>();
+		list.add(new SimpleGrantedAuthority("USER"));
+		return list;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
