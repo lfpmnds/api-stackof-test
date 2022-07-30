@@ -1,6 +1,6 @@
-INSERT INTO tb_user (username, password) VALUES ('maria_dasilva', '$2a$10$DSUGLyJ6j3ps7hRYKH9YduP1IPrBgqeVugz.aXvVO3/ZKjuylG33a');
-INSERT INTO tb_user (username, password) VALUES ('joao@email.com', '$2a$10$DSUGLyJ6j3ps7hRYKH9YduP1IPrBgqeVugz.aXvVO3/ZKjuylG33a');
-INSERT INTO tb_user (username, password) VALUES ('carlosJose2', '$2a$10$DSUGLyJ6j3ps7hRYKH9YduP1IPrBgqeVugz.aXvVO3/ZKjuylG33a');
+INSERT INTO tb_user (username, password) VALUES ('maria_dasilva', '$2a$10$ieaKsHHeKBv98jixftf5GeW.u3AR37Umk72vAkwu.RZamIrU0RJWC');
+INSERT INTO tb_user (username, password) VALUES ('joao@email.com', '$2a$10$ieaKsHHeKBv98jixftf5GeW.u3AR37Umk72vAkwu.RZamIrU0RJWC');
+INSERT INTO tb_user (username, password) VALUES ('carlosJose2', '$2a$10$ieaKsHHeKBv98jixftf5GeW.u3AR37Umk72vAkwu.RZamIrU0RJWC');
 
 INSERT INTO tb_question (body, author_id) VALUES ('Não estou conseguindo conectar o banco H2 ao meu projeto. Alguém poderia me ajudar?', 3);
 INSERT INTO tb_question (body, author_id) VALUES ('Como remover a senha do Spring Security que é gerada assim que rodo a minha aplicação?', 1);
