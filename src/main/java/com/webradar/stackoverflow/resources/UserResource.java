@@ -58,7 +58,7 @@ public class UserResource {
 	
 	@PostMapping
 	public ResponseEntity<User> insert(@RequestBody @Valid User user) {
-		user = userService.save(user);
+		user = userService.insert(user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).body(user);

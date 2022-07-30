@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webradar.stackoverflow.entities.User;
@@ -20,15 +21,20 @@ public class UserService implements UserDetailsService {
 	private static Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private UserRepository repository;
 	
 	public List<User> findAll() {
 		return repository.findAll();
 	}
 
-	public User save(User user) {
-		try {			
-			return repository.save(user);
+	public User insert(User user) {
+		try {	
+			User entity = user;
+			entity.setPassword(passwordEncoder.encode(user.getPassword()));
+			return repository.save(entity);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new UserInsertException("Usuário já cadastrado");
