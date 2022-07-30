@@ -37,7 +37,7 @@ public class AnswerService {
 
 	public Answer update(Long id, Answer answer) {
 		try {
-			Answer entity = repository.getById(id);
+			Answer entity = repository.getOne(id);
 			if (entity.getAuthor().getId() == answer.getAuthor().getId() 
 					&& entity.getQuestion().getId() == answer.getQuestion().getId()) {
 				entity.setBody(answer.getBody());

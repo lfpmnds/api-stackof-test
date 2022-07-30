@@ -33,7 +33,7 @@ public class QuestionService {
 
 	public Question update(Long id, Question question) {
 		try {
-			Question entity = repository.getById(id);
+			Question entity = repository.getOne(id);
 			if (entity.getAuthor().getId() == question.getAuthor().getId()) {
 				entity.setBody(question.getBody());
 				entity = repository.save(entity);
