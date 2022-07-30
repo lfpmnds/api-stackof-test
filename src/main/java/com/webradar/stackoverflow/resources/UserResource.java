@@ -56,7 +56,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@PostMapping
+	@PostMapping(value = "/new")
 	public ResponseEntity<User> insert(@RequestBody @Valid User user) {
 		user = userService.insert(user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")

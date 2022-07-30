@@ -19,4 +19,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
 	@Query("SELECT a FROM Answer a WHERE a.question = :id")
 	List<Answer> findByQuestionId(@Param("id") Question question);
+	
+	Answer getById(Long id);
 }

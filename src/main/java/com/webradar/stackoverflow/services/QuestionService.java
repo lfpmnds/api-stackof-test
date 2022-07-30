@@ -6,6 +6,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.webradar.stackoverflow.entities.Question;
 import com.webradar.stackoverflow.entities.User;
@@ -31,9 +32,10 @@ public class QuestionService {
 		return repository.save(question);
 	}
 
+	@Transactional
 	public Question update(Long id, Question question) {
 		try {
-			Question entity = repository.getOne(id);
+			Question entity = repository.getById(id);
 			if (entity.getAuthor().getId() == question.getAuthor().getId()) {
 				entity.setBody(question.getBody());
 				entity = repository.save(entity);

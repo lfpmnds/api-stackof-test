@@ -22,7 +22,7 @@ public class Answer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 		
-	@NotBlank
+	@NotBlank(message = "A resposta não pode estar vazia")
 	private String body;
 	
 	@ManyToOne
@@ -34,6 +34,11 @@ public class Answer implements Serializable {
 	private Question question;
 	
 	public Answer() {
+	}
+	
+	public Answer(Long id) {
+		super();
+		this.id = id;
 	}
 
 	public Answer(Long id, String body, User author, Question question) {

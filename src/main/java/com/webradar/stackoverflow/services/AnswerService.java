@@ -6,6 +6,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.webradar.stackoverflow.entities.Answer;
 import com.webradar.stackoverflow.entities.Question;
@@ -35,9 +36,10 @@ public class AnswerService {
 		return repository.save(answer);
 	}
 
+	@Transactional
 	public Answer update(Long id, Answer answer) {
 		try {
-			Answer entity = repository.getOne(id);
+			Answer entity = repository.getById(id);
 			if (entity.getAuthor().getId() == answer.getAuthor().getId() 
 					&& entity.getQuestion().getId() == answer.getQuestion().getId()) {
 				entity.setBody(answer.getBody());
@@ -46,7 +48,7 @@ public class AnswerService {
 			return entity;
 		}
 		catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Questão não encontrada");
-		}			
+			throw new ResourceNotFoundException("Resposta não encontrada");
+		}				
 	}
 }
