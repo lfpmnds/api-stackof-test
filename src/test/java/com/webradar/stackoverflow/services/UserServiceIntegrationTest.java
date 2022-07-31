@@ -45,4 +45,9 @@ public class UserServiceIntegrationTest {
 					(null, existingUsername, password));
 		});
 	}
+	
+	@Test
+	public void loadUserByUsernameShouldReturnNotNullWhenUsernameExists() {
+		Assertions.assertNotNull(service.loadUserByUsername(existingUsername));
+	}
 }
