@@ -37,14 +37,14 @@ public class QuestionResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value = "/{id}/answers")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<List<Answer>> findAllAnswersByQuestionId(@PathVariable String id) {
 		Question question = new Question(Long.parseLong(id));
 		List<Answer> list = answerService.findByQuestion(question);
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@PostMapping
+	@PostMapping(value = "/new")
 	public ResponseEntity<Question> insert(@RequestBody @Valid Question question) {
 		question = questionService.save(question);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -52,7 +52,7 @@ public class QuestionResource {
 		return ResponseEntity.created(uri).body(question);
 	}	
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{id}/edit")
 	public ResponseEntity<Question> update(@PathVariable Long id, @RequestBody @Valid Question question) {
 		question = questionService.update(id, question);
 		return ResponseEntity.ok().body(question);
