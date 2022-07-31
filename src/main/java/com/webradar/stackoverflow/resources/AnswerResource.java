@@ -32,7 +32,7 @@ public class AnswerResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@PostMapping
+	@PostMapping(value = "/new")
 	public ResponseEntity<Answer> insert(@RequestBody @Valid Answer answer) {
 		answer = service.save(answer);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -40,7 +40,7 @@ public class AnswerResource {
 		return ResponseEntity.created(uri).body(answer);
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{id}/edit")
 	public ResponseEntity<Answer> update(@PathVariable Long id, @RequestBody @Valid Answer answer) {
 		answer = service.update(id, answer);
 		return ResponseEntity.ok().body(answer);
