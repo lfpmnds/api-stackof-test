@@ -1,4 +1,4 @@
-package com.webradar.stackoverflow.services;
+package com.webradar.stackoverflow.resources;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -16,11 +16,12 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webradar.stackoverflow.entities.User;
+import com.webradar.stackoverflow.services.UserService;
 import com.webradar.stackoverflow.services.exceptions.UserInsertException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserServiceIntegrationTest {
+public class UserResourceIntegrationTests {
 
 	@Autowired
 	private UserService service;
@@ -63,10 +64,5 @@ public class UserServiceIntegrationTest {
 		Assertions.assertThrows(UserInsertException.class, () -> {
 			service.insert(user);
 		});
-	}
-	
-	@Test
-	public void loadUserByUsernameShouldReturnNotNullWhenUsernameExists() {
-		Assertions.assertNotNull(service.loadUserByUsername(existingUsername));
 	}
 }
