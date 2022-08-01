@@ -43,17 +43,20 @@ public class QuestionResourceIntegrationTests {
 	private String existingUsername;
 	private String password;
 	
-	private Long existingIdQuestionFromExistingUsername;
+	private Long existingIdQuestionFromUsernameOnSession;
+	private Long existingIdQuestionFromAnotherUsernameNotOnSession;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		existingUsername = "maria@gmail.com";
 		password = "123456";
-		existingIdQuestionFromExistingUsername = 2L;
+		existingIdQuestionFromUsernameOnSession = 2L;
+		existingIdQuestionFromAnotherUsernameNotOnSession = 4L;
 	}
 
 	@Test
-	public void insertShouldReturnNewQuestionWhenUserIsAuthenticated() throws Exception {
+	public void insertShouldReturnNewQuestionWhenUserIsAuthenticated()
+			throws Exception {
 
 		String accessToken = obtainAccessToken(existingUsername, password);
 
@@ -75,7 +78,8 @@ public class QuestionResourceIntegrationTests {
 	}
 
 	@Test
-	public void updateShouldReturnUpdatedQuestionWhenQuestionBelongsToUser() throws Exception {
+	public void updateShouldReturnUpdatedQuestionWhenQuestionBelongsToUserOnSession()
+			throws Exception {
 		String accessToken = obtainAccessToken(existingUsername, password);
 		User user = new User(null, existingUsername, password);
 
@@ -84,7 +88,7 @@ public class QuestionResourceIntegrationTests {
 		String jsonBody = objectMapper.writeValueAsString(question);
 
 		ResultActions result = mockMvc
-				.perform(put("/questions/{id}/edit", existingIdQuestionFromExistingUsername)
+				.perform(put("/questions/{id}/edit", existingIdQuestionFromUsernameOnSession)
 				.header("Authorization", "Bearer " + accessToken)
 				.content(jsonBody)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -92,6 +96,26 @@ public class QuestionResourceIntegrationTests {
 		
 		result.andExpect(status().isOk());
 		result.andExpect(jsonPath("$.body").value("Será que o teste vai passar?"));
+	}
+	
+	@Test
+	public void updateShouldReturnNotFoundWhenQuestionBelongsToAnotherUserNotOnSession()
+			throws Exception {
+		String accessToken = obtainAccessToken(existingUsername, password);
+		User user = new User(null, existingUsername, password);
+
+		Question question = new Question(null, "Será que o teste vai passar?", user);
+
+		String jsonBody = objectMapper.writeValueAsString(question);
+
+		ResultActions result = mockMvc
+				.perform(put("/questions/{id}/edit", existingIdQuestionFromAnotherUsernameNotOnSession)
+				.header("Authorization", "Bearer " + accessToken)
+				.content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
 	}
 
 	private String obtainAccessToken(String username, String password) throws Exception {
