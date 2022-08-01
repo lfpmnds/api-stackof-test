@@ -1,6 +1,7 @@
 package com.webradar.stackoverflow.resources;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -121,6 +122,15 @@ public class AnswerResourceIntegrationTests {
 				.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void findAllShouldReturnAllAnswers() throws Exception {	
+		
+		ResultActions result = mockMvc.perform(get("/answers")
+				.accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());
 	}
 
 	private String obtainAccessToken(String username, String password) throws Exception {
