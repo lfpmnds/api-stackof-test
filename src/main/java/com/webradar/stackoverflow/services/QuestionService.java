@@ -31,21 +31,6 @@ public class QuestionService {
 		return repository.save(question);
 	}
 
-//	@Transactional
-//	public Question update(Long id, Question question) {
-//		try {
-//			Question entity = repository.findById(id).orElseThrow(() -> throw new ResourceNotFoundException("Questão não encontrada");
-//			if (entity.getAuthor().getId() == question.getAuthor().getId()) {
-//				entity.setBody(question.getBody());
-//				entity = repository.save(entity);
-//			}
-//			return entity;
-//		}
-//		catch (EntityNotFoundException e) {
-//			throw new ResourceNotFoundException("Questão não encontrada");
-//		}		
-//	}
-
 	@Transactional
 	public Question update(Long id, Question question) {
 

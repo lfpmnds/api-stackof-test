@@ -2,9 +2,8 @@ package com.webradar.stackoverflow.services;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,20 +34,23 @@ public class AnswerService {
 	public Answer save(Answer answer) {
 		return repository.save(answer);
 	}
-
+	
 	@Transactional
 	public Answer update(Long id, Answer answer) {
-		try {
-			Answer entity = repository.getById(id);
-			if (entity.getAuthor().getId() == answer.getAuthor().getId() 
-					&& entity.getQuestion().getId() == answer.getQuestion().getId()) {
-				entity.setBody(answer.getBody());
-				entity = repository.save(entity);
-			}
-			return entity;
+
+		Answer entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Resposta não encontrada"));
+
+		String userOnSession = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (verifyIfAnswerIsFromUserOnSession(entity, userOnSession)) {
+			entity.setBody(answer.getBody());
+			return repository.save(entity);
+		} else {
+			throw new ResourceNotFoundException("Você não pode editar uma resposta que não é sua");
 		}
-		catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Resposta não encontrada");
-		}				
+	}
+	protected boolean verifyIfAnswerIsFromUserOnSession(Answer answer, String userOnSession) {
+		return answer.getAuthor().getUsername().equals(userOnSession);
 	}
 }
