@@ -34,7 +34,16 @@ public class AnswerService {
 	}
 	
 	public Answer save(Answer answer) {
-		return repository.save(answer);
+		try {
+			String userOnSession = userService.getUserOnSession();
+			User user = userService.findByUsername(userOnSession);
+			answer.setAuthor(user);	
+			return repository.save(answer);
+		}
+		catch (Exception e) {
+			throw new ResourceNotFoundException("Pergunta não encontrada. Impossível responder");
+		}
+		
 	}
 	
 	@Transactional
