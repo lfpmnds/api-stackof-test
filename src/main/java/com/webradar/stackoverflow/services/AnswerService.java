@@ -61,6 +61,7 @@ public class AnswerService {
 			throw new ResourceNotFoundException("Você não pode editar uma resposta que não é sua");
 		}
 	}
+	
 	protected boolean verifyIfAnswerIsFromUserOnSession(Answer answer, String userOnSession) {
 		return answer.getAuthor().getUsername().equals(userOnSession);
 	}
