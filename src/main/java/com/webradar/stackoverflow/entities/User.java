@@ -111,6 +111,7 @@ public class User implements UserDetails, Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> list = new ArrayList<>();
