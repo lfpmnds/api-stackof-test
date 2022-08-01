@@ -3,7 +3,6 @@ package com.webradar.stackoverflow.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +16,9 @@ public class QuestionService {
 
 	@Autowired
 	private QuestionRepository repository;
+	
+	@Autowired
+	private UserService userService;
 
 	public List<Question> findAll() {
 		return repository.findAll();
@@ -28,7 +30,10 @@ public class QuestionService {
 	}
 
 	public Question save(Question question) {
-		return repository.save(question);
+		String userOnSession = userService.getUserOnSession();
+		User user = userService.findByUsername(userOnSession);
+		question.setAuthor(user);
+		return repository.save(question);		
 	}
 
 	@Transactional
@@ -37,7 +42,7 @@ public class QuestionService {
 		Question entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Questão não encontrada"));
 
-		String userOnSession = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String userOnSession = userService.getUserOnSession();
 
 		if (verifyIfQuestionIsFromUserOnSession(entity, userOnSession)) {
 			entity.setBody(question.getBody());

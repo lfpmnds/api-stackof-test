@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,12 +44,21 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = repository.findByUsername(username);
+		User user = findByUsername(username);
 		if (user == null) {
 			logger.error("Usuário não encontrado: " + username);
 			throw new UsernameNotFoundException("Usuário não encontrado");
 		}
 		logger.info("Usuário encontrado: " + username);
 		return user;
+	}
+	
+	public User findByUsername(String username) {
+		return repository.findByUsername(username);
+	}
+	
+	public String getUserOnSession() {
+		return (String) SecurityContextHolder
+				.getContext().getAuthentication().getPrincipal();
 	}
 }
