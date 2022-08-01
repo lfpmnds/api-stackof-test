@@ -1,6 +1,7 @@
 package com.webradar.stackoverflow.resources;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -27,7 +28,7 @@ import com.webradar.stackoverflow.entities.User;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class QuestionResourceIntegrationTests {
-
+	
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -57,13 +58,9 @@ public class QuestionResourceIntegrationTests {
 	@Test
 	public void insertShouldReturnNewQuestionWhenUserIsAuthenticated()
 			throws Exception {
-
 		String accessToken = obtainAccessToken(existingUsername, password);
-
 		User user = new User(null, existingUsername, password);
-
 		Question question = new Question(null, "Será que o teste vai passar?", user);
-
 		String jsonBody = objectMapper.writeValueAsString(question);
 
 		ResultActions result = mockMvc
@@ -82,13 +79,12 @@ public class QuestionResourceIntegrationTests {
 			throws Exception {
 		String accessToken = obtainAccessToken(existingUsername, password);
 		User user = new User(null, existingUsername, password);
-
 		Question question = new Question(null, "Será que o teste vai passar?", user);
-
 		String jsonBody = objectMapper.writeValueAsString(question);
 
 		ResultActions result = mockMvc
-				.perform(put("/questions/{id}/edit", existingIdQuestionFromUsernameOnSession)
+				.perform(put("/questions/{id}/edit",
+						existingIdQuestionFromUsernameOnSession)
 				.header("Authorization", "Bearer " + accessToken)
 				.content(jsonBody)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -103,19 +99,27 @@ public class QuestionResourceIntegrationTests {
 			throws Exception {
 		String accessToken = obtainAccessToken(existingUsername, password);
 		User user = new User(null, existingUsername, password);
-
 		Question question = new Question(null, "Será que o teste vai passar?", user);
-
 		String jsonBody = objectMapper.writeValueAsString(question);
 
 		ResultActions result = mockMvc
-				.perform(put("/questions/{id}/edit", existingIdQuestionFromAnotherUsernameNotOnSession)
+				.perform(put("/questions/{id}/edit",
+						existingIdQuestionFromAnotherUsernameNotOnSession)
 				.header("Authorization", "Bearer " + accessToken)
 				.content(jsonBody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void findAllShouldReturnAllQuestions() throws Exception {	
+		
+		ResultActions result = mockMvc.perform(get("/questions")
+				.accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());
 	}
 
 	private String obtainAccessToken(String username, String password) throws Exception {

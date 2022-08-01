@@ -42,8 +42,7 @@ public class AnswerService {
 		}
 		catch (Exception e) {
 			throw new ResourceNotFoundException("Pergunta não encontrada. Impossível responder");
-		}
-		
+		}		
 	}
 	
 	@Transactional
