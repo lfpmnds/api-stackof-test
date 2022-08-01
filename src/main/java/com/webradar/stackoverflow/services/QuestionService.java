@@ -2,9 +2,8 @@ package com.webradar.stackoverflow.services;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,32 +17,51 @@ public class QuestionService {
 
 	@Autowired
 	private QuestionRepository repository;
-	
+
 	public List<Question> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public List<Question> findByUser(User user) {
 		return repository.findByUserId(user);
-				
+
 	}
-	
+
 	public Question save(Question question) {
 		return repository.save(question);
 	}
 
+//	@Transactional
+//	public Question update(Long id, Question question) {
+//		try {
+//			Question entity = repository.findById(id).orElseThrow(() -> throw new ResourceNotFoundException("Questão não encontrada");
+//			if (entity.getAuthor().getId() == question.getAuthor().getId()) {
+//				entity.setBody(question.getBody());
+//				entity = repository.save(entity);
+//			}
+//			return entity;
+//		}
+//		catch (EntityNotFoundException e) {
+//			throw new ResourceNotFoundException("Questão não encontrada");
+//		}		
+//	}
+
 	@Transactional
 	public Question update(Long id, Question question) {
-		try {
-			Question entity = repository.getById(id);
-			if (entity.getAuthor().getId() == question.getAuthor().getId()) {
-				entity.setBody(question.getBody());
-				entity = repository.save(entity);
-			}
-			return entity;
+
+		Question entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Questão não encontrada"));
+
+		String userOnSession = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (verifyIfQuestionIsFromUserOnSession(entity, userOnSession)) {
+			entity.setBody(question.getBody());
+			return repository.save(entity);
+		} else {
+			throw new ResourceNotFoundException("Você não pode editar uma questão que não é sua");
 		}
-		catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Questão não encontrada");
-		}		
+	}
+	protected boolean verifyIfQuestionIsFromUserOnSession(Question question, String userOnSession) {
+		return question.getAuthor().getUsername().equals(userOnSession);
 	}
 }
